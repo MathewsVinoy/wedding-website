@@ -1,587 +1,244 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sithara &amp; Renath | Wedding Invitation</title>
-    <meta
-      name="description"
-      content="You are invited to the wedding of Sithara &amp; Renath. Find the schedule, venue, photos and RSVP here."
-    />
-    <meta name="theme-color" content="#F6D0D8" />
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sithara &amp; Renath | Wedding Invitation</title>
+  <meta name="description" content="You are invited to the wedding of Sithara &amp; Renath. Find the schedule, venue, and photos here.">
+  <meta name="theme-color" content="#F6D0D8">
 
-    <meta property="og:type" content="website" />
-    <meta
-      property="og:title"
-      content="Sithara &amp; Renath | Wedding Invitation"
-    />
-    <meta
-      property="og:description"
-      content="You are invited to celebrate our wedding. Schedule, venue and RSVP inside."
-    />
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Sithara &amp; Renath | Wedding Invitation">
+  <meta property="og:description" content="You are invited to celebrate our wedding. Schedule, venue and photos inside.">
 
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234A1526'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='%23DCC48E' font-family='serif'%3E%26amp%3B%3C/text%3E%3C/svg%3E"
-    />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234A1526'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='%23DCC48E' font-family='serif'%3E%26amp%3B%3C/text%3E%3C/svg%3E">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap"
-      rel="stylesheet"
-    />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
 
-    <script>
-      document.documentElement.classList.add("js");
-    </script>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <a class="skip-link" href="#invitation">Skip to content</a>
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#invitation">Skip to content</a>
 
-    <main>
-      <!-- ===================== HERO ===================== -->
-      <section class="hero" id="home">
-        <div class="hero__bg" data-hero-bg></div>
-        <div class="hero__overlay"></div>
-        <svg
-          class="hero__mandala"
-          viewBox="-200 -200 400 400"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <g
-            fill="none"
-            stroke="currentColor"
-            stroke-width=".7"
-            id="mandala"
-          ></g>
-        </svg>
-        <div class="petals" aria-hidden="true"></div>
+  <main>
+    <!-- ===================== HERO ===================== -->
+    <section class="hero" id="home">
+      <div class="hero__bg" data-hero-bg></div>
+      <div class="hero__overlay"></div>
+      <svg class="hero__mandala" viewBox="-200 -200 400 400" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-width=".7" id="mandala"></g>
+      </svg>
+      <div class="petals" aria-hidden="true"></div>
 
-        <div class="hero__content">
-          <p class="hero__eyebrow" data-bind="invitation.eyebrow">
-            You are invited
-          </p>
-          <h1 class="hero__names">
-            <span data-bind="bride.name">Sithara</span>
-            <span class="amp" aria-hidden="true">&amp;</span>
-            <span data-bind="groom.name">Renath</span>
-          </h1>
-          <p class="hero__sub">are getting married</p>
-          <div class="hero__divider" aria-hidden="true"><i></i></div>
-          <p class="hero__date" data-bind="display.dateLong"></p>
-          <p class="hero__place" data-bind="venue.city"></p>
-          <a href="#rsvp" class="btn btn--gold">Kindly RSVP</a>
-        </div>
-
-        <a
-          class="hero__scroll"
-          href="#invitation"
-          aria-label="Scroll to invitation"
-          ><span></span
-        ></a>
-      </section>
-
-      <!-- ===================== INVITATION ===================== -->
-      <section class="section section--cream" id="invitation">
-        <div class="container invitation">
-          <p class="eyebrow reveal" data-bind="invitation.eyebrow"></p>
-          <h2 class="section-title reveal" data-bind="invitation.heading"></h2>
-          <div class="ornament reveal"><i></i></div>
-          <div class="invitation__text reveal" id="invitation-text"></div>
-          <p
-            class="invitation__sign reveal"
-            data-bind="invitation.signature"
-          ></p>
-        </div>
-      </section>
-
-      <!-- ===================== COUPLE ===================== -->
-      <section class="section" id="couple">
-        <div class="container">
-          <header class="section-head reveal">
-            <p class="eyebrow">Meet the couple</p>
-            <h2 class="section-title">Two hearts, one story</h2>
-            <div class="ornament"><i></i></div>
-          </header>
-
-          <div class="couple">
-            <article class="person reveal" id="bride-card">
-              <div class="person__photo">
-                <img
-                  alt=""
-                  width="600"
-                  height="800"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <p class="person__role" data-bind="bride.role"></p>
-              <h3 class="person__name" data-bind="bride.fullName"></h3>
-              <p class="person__parents" data-bind="bride.parents"></p>
-              <p class="person__about" data-bind="bride.about"></p>
-            </article>
-
-            <div class="couple__amp reveal" aria-hidden="true">&amp;</div>
-
-            <article class="person reveal" id="groom-card" style="--d: 120ms">
-              <div class="person__photo">
-                <img
-                  alt=""
-                  width="600"
-                  height="800"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <p class="person__role" data-bind="groom.role"></p>
-              <h3 class="person__name" data-bind="groom.fullName"></h3>
-              <p class="person__parents" data-bind="groom.parents"></p>
-              <p class="person__about" data-bind="groom.about"></p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===================== DATE / TIME / VENUE ===================== -->
-      <section class="section section--cream" id="details">
-        <div class="container">
-          <header class="section-head reveal">
-            <p class="eyebrow">Save the date</p>
-            <h2 class="section-title">The big day</h2>
-            <div class="ornament"><i></i></div>
-          </header>
-
-          <div class="details">
-            <article class="detail reveal">
-              <div class="detail__icon">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <rect x="3.5" y="5" width="17" height="15.5" rx="2" />
-                  <path d="M3.5 10h17M8 3v4M16 3v4" />
-                </svg>
-              </div>
-              <h3>Date</h3>
-              <p class="detail__main" data-bind="display.dateLong"></p>
-            </article>
-            <article class="detail reveal" style="--d: 100ms">
-              <div class="detail__icon">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <circle cx="12" cy="12" r="8.5" />
-                  <path d="M12 7v5l3.2 2" />
-                </svg>
-              </div>
-              <h3>Time</h3>
-              <p class="detail__main" data-bind="display.time"></p>
-            </article>
-            <article class="detail reveal" style="--d: 200ms">
-              <div class="detail__icon">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path
-                    d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"
-                  />
-                  <circle cx="12" cy="10" r="2.3" />
-                </svg>
-              </div>
-              <h3>Venue</h3>
-              <p class="detail__main" data-bind="venue.name"></p>
-              <p class="detail__sub" data-bind="venue.address"></p>
-            </article>
-          </div>
-
-          <p class="dresscode reveal" id="dresscode" hidden>
-            Dress code &middot; <span data-bind="dressCode"></span>
-          </p>
-
-          <div class="detail-actions reveal">
-            <button type="button" class="btn btn--outline" id="btn-ics">
-              Add to calendar (.ics)
-            </button>
-            <a
-              class="btn btn--outline"
-              id="btn-gcal"
-              target="_blank"
-              rel="noopener"
-              >Google Calendar</a
-            >
-          </div>
-        </div>
-      </section>
-
-      <!-- ===================== SCHEDULE ===================== -->
-      <section class="section" id="schedule">
-        <div class="container">
-          <header class="section-head reveal">
-            <p class="eyebrow">Celebrations</p>
-            <h2 class="section-title">Wedding schedule</h2>
-            <div class="ornament"><i></i></div>
-          </header>
-          <ol class="timeline" id="timeline"></ol>
-        </div>
-      </section>
-
-      <!-- ===================== GALLERY ===================== -->
-      <section class="section section--cream" id="gallery">
-        <div class="container">
-          <header class="section-head reveal">
-            <p class="eyebrow">Moments</p>
-            <h2 class="section-title">Our gallery</h2>
-            <div class="ornament"><i></i></div>
-            <p class="hashtag" id="hashtag" hidden></p>
-          </header>
-          <ul class="gallery" id="gallery-grid"></ul>
-        </div>
-      </section>
-
-      <!-- ===================== COUNTDOWN ===================== -->
-      <section class="section section--dark countdown" id="countdown">
-        <div class="container">
-          <header class="section-head reveal">
-            <p class="eyebrow">Counting down</p>
-            <h2 class="section-title">Until we say "I do"</h2>
-            <div class="ornament"><i></i></div>
-          </header>
-
-          <div class="count reveal" id="count" role="timer" aria-live="off">
-            <div class="count__item">
-              <span class="count__num" data-unit="days">00</span
-              ><span class="count__label">Days</span>
-            </div>
-            <div class="count__item">
-              <span class="count__num" data-unit="hours">00</span
-              ><span class="count__label">Hours</span>
-            </div>
-            <div class="count__item">
-              <span class="count__num" data-unit="minutes">00</span
-              ><span class="count__label">Minutes</span>
-            </div>
-            <div class="count__item">
-              <span class="count__num" data-unit="seconds">00</span
-              ><span class="count__label">Seconds</span>
-            </div>
-          </div>
-          <p class="count__done" id="count-done" hidden></p>
-        </div>
-      </section>
-
-      <!-- ===================== LOCATION ===================== -->
-      <section class="section" id="location">
-        <div class="container">
-          <header class="section-head reveal">
-            <p class="eyebrow">Getting there</p>
-            <h2 class="section-title">The venue</h2>
-            <div class="ornament"><i></i></div>
-          </header>
-
-          <div class="location">
-            <div class="location__info reveal">
-              <h3 data-bind="venue.name"></h3>
-              <p class="location__address" data-bind="venue.address"></p>
-              <ul class="location__notes" id="venue-notes"></ul>
-              <div class="location__actions">
-                <a
-                  class="btn btn--wine"
-                  id="btn-directions"
-                  target="_blank"
-                  rel="noopener"
-                  >Get directions</a
-                >
-                <a
-                  class="btn btn--outline"
-                  id="btn-openmap"
-                  target="_blank"
-                  rel="noopener"
-                  >Open in Google Maps</a
-                >
-              </div>
-            </div>
-            <div class="location__map reveal" style="--d: 120ms">
-              <iframe
-                id="map"
-                title="Map showing the wedding venue"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                allowfullscreen
-              ></iframe>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===================== RSVP ===================== -->
-      <section class="section section--cream" id="rsvp">
-        <div class="container container--narrow">
-          <header class="section-head reveal">
-            <p class="eyebrow">Will you join us?</p>
-            <h2 class="section-title">RSVP</h2>
-            <div class="ornament"><i></i></div>
-            <p class="rsvp__deadline" id="rsvp-deadline" hidden></p>
-          </header>
-
-          <div class="rsvp reveal">
-            <form id="rsvp-form" novalidate>
-              <div class="field-row">
-                <div class="field">
-                  <label for="rsvp-name"
-                    >Full name <span aria-hidden="true">*</span></label
-                  >
-                  <input
-                    id="rsvp-name"
-                    name="name"
-                    type="text"
-                    autocomplete="name"
-                    maxlength="80"
-                    required
-                  />
-                  <p
-                    class="field__error"
-                    data-error-for="name"
-                    role="alert"
-                  ></p>
-                </div>
-                <div class="field">
-                  <label for="rsvp-contact"
-                    >Phone or email <span aria-hidden="true">*</span></label
-                  >
-                  <input
-                    id="rsvp-contact"
-                    name="contact"
-                    type="text"
-                    autocomplete="email"
-                    inputmode="email"
-                    maxlength="80"
-                    required
-                  />
-                  <p
-                    class="field__error"
-                    data-error-for="contact"
-                    role="alert"
-                  ></p>
-                </div>
-              </div>
-
-              <fieldset class="field field--choice">
-                <legend>
-                  Will you attend? <span aria-hidden="true">*</span>
-                </legend>
-                <div class="pills">
-                  <label class="pill"
-                    ><input type="radio" name="attending" value="yes" /><span
-                      >Joyfully accept</span
-                    ></label
-                  >
-                  <label class="pill"
-                    ><input type="radio" name="attending" value="no" /><span
-                      >Regretfully decline</span
-                    ></label
-                  >
-                </div>
-                <p
-                  class="field__error"
-                  data-error-for="attending"
-                  role="alert"
-                ></p>
-              </fieldset>
-
-              <div id="rsvp-extra" hidden>
-                <div class="field-row">
-                  <div class="field">
-                    <label for="rsvp-guests"
-                      >Number of guests (including you)</label
-                    >
-                    <select id="rsvp-guests" name="guests"></select>
-                  </div>
-                  <div class="field" id="meal-field" hidden>
-                    <label for="rsvp-meal">Meal preference</label>
-                    <select id="rsvp-meal" name="meal"></select>
-                  </div>
-                </div>
-
-                <fieldset class="field field--choice" id="events-field">
-                  <legend>Which events will you attend?</legend>
-                  <div class="pills" id="rsvp-events"></div>
-                </fieldset>
-              </div>
-
-              <div class="field">
-                <label for="rsvp-message"
-                  >Message for the couple
-                  <span class="opt">(optional)</span></label
-                >
-                <textarea
-                  id="rsvp-message"
-                  name="message"
-                  rows="3"
-                  maxlength="500"
-                ></textarea>
-              </div>
-
-              <!-- spam trap: real guests never see or fill this -->
-              <div class="hp" aria-hidden="true">
-                <label
-                  >Leave empty
-                  <input
-                    type="text"
-                    name="_gotcha"
-                    tabindex="-1"
-                    autocomplete="off"
-                /></label>
-              </div>
-
-              <button
-                class="btn btn--wine btn--block"
-                type="submit"
-                id="rsvp-submit"
-              >
-                Send my RSVP
-              </button>
-              <p
-                class="form-status"
-                id="rsvp-status"
-                role="status"
-                aria-live="polite"
-              ></p>
-            </form>
-
-            <div class="rsvp__result" id="rsvp-result" hidden tabindex="-1">
-              <div class="rsvp__tick" aria-hidden="true">&#10003;</div>
-              <h3 id="rsvp-result-title"></h3>
-              <p id="rsvp-result-text"></p>
-              <div class="rsvp__result-actions">
-                <button
-                  type="button"
-                  class="btn btn--outline"
-                  id="rsvp-copy"
-                  hidden
-                >
-                  Copy my reply
-                </button>
-                <button type="button" class="btn btn--outline" id="rsvp-again">
-                  Edit / send another
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===================== CONTACT ===================== -->
-      <section class="section" id="contact">
-        <div class="container">
-          <header class="section-head reveal">
-            <p class="eyebrow">Questions?</p>
-            <h2 class="section-title">Get in touch</h2>
-            <div class="ornament"><i></i></div>
-            <p class="section-lead">
-              Our family would be delighted to help with travel, stay or
-              anything else.
-            </p>
-          </header>
-          <ul class="contacts" id="contacts"></ul>
-        </div>
-      </section>
-    </main>
-
-    <!-- ===================== FOOTER ===================== -->
-    <footer class="footer">
-      <div class="container">
-        <p class="footer__monogram" data-monogram>A &amp; A</p>
-        <p class="footer__names">
-          <span data-bind="bride.name"></span> <em>&amp;</em>
-          <span data-bind="groom.name"></span>
-        </p>
-        <p class="footer__date" data-bind="display.dateShort"></p>
-        <div class="footer__rule" aria-hidden="true"></div>
-        <p class="footer__credit">
-          &copy; 2026 All Rights Reserved | Designed &amp; Developed by
-          <span id="developer-credit">[YOUR NAME]</span>
-        </p>
+      <div class="hero__content">
+        <p class="hero__eyebrow" data-bind="invitation.eyebrow">You are invited</p>
+        <h1 class="hero__names">
+          <span data-bind="bride.name">Sithara</span>
+          <span class="amp" aria-hidden="true">&amp;</span>
+          <span data-bind="groom.name">Renath</span>
+        </h1>
+        <p class="hero__sub">are getting married</p>
+        <div class="hero__divider" aria-hidden="true"><i></i></div>
+        <p class="hero__date" data-bind="display.dateLong"></p>
+        <p class="hero__place" data-bind="venue.city"></p>
+        <a href="#details" class="btn btn--gold">Save the date</a>
       </div>
-    </footer>
 
-    <!-- ===================== BACKGROUND MUSIC ===================== -->
-    <button
-      class="music"
-      id="music-toggle"
-      type="button"
-      aria-pressed="false"
-      aria-label="Play background music"
-    >
-      <span class="music__bars" aria-hidden="true"
-        ><i></i><i></i><i></i><i></i
-      ></span>
-      <span class="music__label">Play music</span>
-    </button>
-    <audio id="bg-audio" loop preload="none"></audio>
+      <a class="hero__scroll" href="#invitation" aria-label="Scroll to invitation"><span></span></a>
+    </section>
 
-    <!-- ===================== LIGHTBOX ===================== -->
-    <div
-      class="lightbox"
-      id="lightbox"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Photo viewer"
-      hidden
-    >
-      <button
-        class="lightbox__btn lightbox__close"
-        type="button"
-        aria-label="Close"
-      >
-        &times;
-      </button>
-      <button
-        class="lightbox__btn lightbox__nav lightbox__prev"
-        type="button"
-        aria-label="Previous photo"
-      >
-        &#8249;
-      </button>
-      <figure class="lightbox__stage">
-        <img class="lightbox__img" alt="" />
-        <figcaption>
-          <span class="lightbox__caption"></span
-          ><span class="lightbox__count"></span>
-        </figcaption>
-      </figure>
-      <button
-        class="lightbox__btn lightbox__nav lightbox__next"
-        type="button"
-        aria-label="Next photo"
-      >
-        &#8250;
-      </button>
+    <!-- ===================== INVITATION ===================== -->
+    <section class="section section--cream" id="invitation">
+      <div class="container invitation">
+        <p class="eyebrow reveal" data-bind="invitation.eyebrow"></p>
+        <h2 class="section-title reveal" data-bind="invitation.heading"></h2>
+        <div class="ornament reveal"><i></i></div>
+        <div class="invitation__text reveal" id="invitation-text"></div>
+        <p class="invitation__sign reveal" data-bind="invitation.signature"></p>
+      </div>
+    </section>
+
+    <!-- ===================== COUPLE ===================== -->
+    <section class="section" id="couple">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">Meet the couple</p>
+          <h2 class="section-title">Two hearts, one story</h2>
+          <div class="ornament"><i></i></div>
+        </header>
+
+        <div class="couple">
+          <article class="person reveal" id="bride-card">
+            <div class="person__photo"><img alt="" width="600" height="800" loading="lazy" decoding="async"></div>
+            <p class="person__role" data-bind="bride.role"></p>
+            <h3 class="person__name" data-bind="bride.fullName"></h3>
+            <p class="person__parents" data-bind="bride.parents"></p>
+            <p class="person__about" data-bind="bride.about"></p>
+          </article>
+
+          <div class="couple__amp reveal" aria-hidden="true">&amp;</div>
+
+          <article class="person reveal" id="groom-card" style="--d:120ms">
+            <div class="person__photo"><img alt="" width="600" height="800" loading="lazy" decoding="async"></div>
+            <p class="person__role" data-bind="groom.role"></p>
+            <h3 class="person__name" data-bind="groom.fullName"></h3>
+            <p class="person__parents" data-bind="groom.parents"></p>
+            <p class="person__about" data-bind="groom.about"></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== DATE / TIME / VENUE ===================== -->
+    <section class="section section--cream" id="details">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">Save the date</p>
+          <h2 class="section-title">The big day</h2>
+          <div class="ornament"><i></i></div>
+        </header>
+
+        <div class="details">
+          <article class="detail reveal">
+            <div class="detail__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+            </div>
+            <h3>Date</h3>
+            <p class="detail__main" data-bind="display.dateLong"></p>
+          </article>
+          <article class="detail reveal" style="--d:100ms">
+            <div class="detail__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.2 2"/></svg>
+            </div>
+            <h3>Time</h3>
+            <p class="detail__main" data-bind="display.time"></p>
+          </article>
+          <article class="detail reveal" style="--d:200ms">
+            <div class="detail__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.3"/></svg>
+            </div>
+            <h3>Venue</h3>
+            <p class="detail__main" data-bind="venue.name"></p>
+            <p class="detail__sub" data-bind="venue.address"></p>
+          </article>
+        </div>
+
+        <p class="dresscode reveal" id="dresscode" hidden>Dress code &middot; <span data-bind="dressCode"></span></p>
+
+        <div class="detail-actions reveal">
+          <button type="button" class="btn btn--outline" id="btn-ics">Add to calendar (.ics)</button>
+          <a class="btn btn--outline" id="btn-gcal" target="_blank" rel="noopener">Google Calendar</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SCHEDULE ===================== -->
+    <section class="section" id="schedule">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">Celebrations</p>
+          <h2 class="section-title">Wedding schedule</h2>
+          <div class="ornament"><i></i></div>
+        </header>
+        <ol class="timeline" id="timeline"></ol>
+      </div>
+    </section>
+
+    <!-- ===================== GALLERY ===================== -->
+    <section class="section section--cream" id="gallery">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">Moments</p>
+          <h2 class="section-title">Our gallery</h2>
+          <div class="ornament"><i></i></div>
+          <p class="hashtag" id="hashtag" hidden></p>
+        </header>
+        <ul class="gallery" id="gallery-grid"></ul>
+      </div>
+    </section>
+
+    <!-- ===================== COUNTDOWN ===================== -->
+    <section class="section section--dark countdown" id="countdown">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">Counting down</p>
+          <h2 class="section-title">Until we say "I do"</h2>
+          <div class="ornament"><i></i></div>
+        </header>
+
+        <div class="count reveal" id="count" role="timer" aria-live="off">
+          <div class="count__item"><span class="count__num" data-unit="days">00</span><span class="count__label">Days</span></div>
+          <div class="count__item"><span class="count__num" data-unit="hours">00</span><span class="count__label">Hours</span></div>
+          <div class="count__item"><span class="count__num" data-unit="minutes">00</span><span class="count__label">Minutes</span></div>
+          <div class="count__item"><span class="count__num" data-unit="seconds">00</span><span class="count__label">Seconds</span></div>
+        </div>
+        <p class="count__done" id="count-done" hidden></p>
+      </div>
+    </section>
+
+    <!-- ===================== LOCATION ===================== -->
+    <section class="section" id="location">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">Getting there</p>
+          <h2 class="section-title">The venue</h2>
+          <div class="ornament"><i></i></div>
+        </header>
+
+        <div class="location">
+          <div class="location__info reveal">
+            <h3 data-bind="venue.name"></h3>
+            <p class="location__address" data-bind="venue.address"></p>
+            <ul class="location__notes" id="venue-notes"></ul>
+            <div class="location__actions">
+              <a class="btn btn--wine" id="btn-directions" target="_blank" rel="noopener">Get directions</a>
+              <a class="btn btn--outline" id="btn-openmap" target="_blank" rel="noopener">Open in Google Maps</a>
+            </div>
+          </div>
+          <div class="location__map reveal" style="--d:120ms">
+            <iframe id="map" title="Map showing the wedding venue" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__monogram" data-monogram>A &amp; A</p>
+      <p class="footer__names"><span data-bind="bride.name"></span> <em>&amp;</em> <span data-bind="groom.name"></span></p>
+      <p class="footer__date" data-bind="display.dateShort"></p>
+      <div class="footer__rule" aria-hidden="true"></div>
+      <p class="footer__credit">&copy; 2026 All Rights Reserved | Designed &amp; Developed by <span id="developer-credit">[YOUR NAME]</span></p>
     </div>
+  </footer>
 
-    <noscript
-      ><p class="noscript">
-        Please enable JavaScript to see the full invitation.
-      </p></noscript
-    >
+  <!-- ===================== BACKGROUND MUSIC ===================== -->
+  <button class="music" id="music-toggle" type="button" aria-pressed="false" aria-label="Play background music">
+    <span class="music__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <span class="music__label">Play music</span>
+  </button>
+  <audio id="bg-audio" loop preload="none"></audio>
 
-    <script src="js/config.js"></script>
-    <script src="js/main.js" defer></script>
-  </body>
+  <!-- ===================== LIGHTBOX ===================== -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
+    <button class="lightbox__btn lightbox__close" type="button" aria-label="Close">&times;</button>
+    <button class="lightbox__btn lightbox__nav lightbox__prev" type="button" aria-label="Previous photo">&#8249;</button>
+    <figure class="lightbox__stage">
+      <img class="lightbox__img" alt="">
+      <figcaption><span class="lightbox__caption"></span><span class="lightbox__count"></span></figcaption>
+    </figure>
+    <button class="lightbox__btn lightbox__nav lightbox__next" type="button" aria-label="Next photo">&#8250;</button>
+  </div>
+
+  <noscript><p class="noscript">Please enable JavaScript to see the full invitation.</p></noscript>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js" defer></script>
+</body>
 </html>
