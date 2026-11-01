@@ -145,7 +145,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
 @keyframes spin { to { rotate: 360deg; } }
 
 .hero__content { max-width: 1100px; }
-.hero__content > * { opacity: 0; animation: rise 1.2s var(--ease) forwards; }
+.hero__content > * { opacity: 0; animation: rise 1.2s var(--ease) forwards; animation-play-state: paused; }
+.is-ready .hero__content > *, html:not(.js) .hero__content > * { animation-play-state: running; }
 .hero__content > :nth-child(1) { animation-delay: .2s; }
 .hero__content > :nth-child(2) { animation-delay: .45s; }
 .hero__content > :nth-child(3) { animation-delay: .7s; }
@@ -392,6 +393,64 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .footer__credit { font-size: .78rem; letter-spacing: .06em; color: var(--wine); opacity: .7; }
 .footer__credit a, .footer__credit span { color: var(--rose); text-decoration: none; font-weight: 400; }
 .footer__credit a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+
+/* ---------- Splash screen: two butterflies become a heart ---------- */
+.splash {
+  position: fixed; inset: 0; z-index: 300; display: none; place-items: center; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 40%, #FFFBF5 0%, #FCEBE6 50%, #F7D3DB 100%);
+  transition: opacity .75s var(--ease);
+}
+.js .splash { display: grid; animation: sp-failsafe .8s ease 6s forwards; }   /* CSS-only safety net */
+@keyframes sp-failsafe { to { opacity: 0; visibility: hidden; pointer-events: none; } }
+.splash.is-leaving { opacity: 0; pointer-events: none; }
+.splash.is-leaving.is-fast { transition-duration: .5s; }
+
+.bfs { width: min(94vw, 560px); height: auto; overflow: visible; animation: sp-in .5s ease-out both; }
+@keyframes sp-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* flight: x travel, y float, a little aim/tilt, then merge into the heart */
+.bf, .bf__x, .bf__y, .bf__aim, .bf__merge, .bf__flap, .heart, .heart__pop, .heart__beat { transform-origin: 0 0; }
+.bf--l .bf__x   { animation: sp-x-l 1.7s cubic-bezier(.28, .6, .3, 1) .2s both; }
+.bf--r .bf__x   { animation: sp-x-r 1.7s cubic-bezier(.28, .6, .3, 1) .2s both; }
+.bf--l .bf__y   { animation: sp-y-l 1.7s ease-in-out .2s both; }
+.bf--r .bf__y   { animation: sp-y-r 1.7s ease-in-out .2s both; }
+.bf--l .bf__aim { animation: sp-aim-l 1.7s ease-in-out .2s both; }
+.bf--r .bf__aim { animation: sp-aim-r 1.7s ease-in-out .2s both; }
+.bf--l .bf__merge { animation: sp-merge-l .55s cubic-bezier(.45, 0, .25, 1) 1.9s both; }
+.bf--r .bf__merge { animation: sp-merge-r .55s cubic-bezier(.45, 0, .25, 1) 1.9s both; }
+.bf__flap { animation: sp-flap .3s ease-in-out .1s 6 alternate both; }
+
+@keyframes sp-x-l { from { transform: translateX(-270px); } to { transform: translateX(-66px); } }
+@keyframes sp-x-r { from { transform: translateX(270px); }  to { transform: translateX(66px); } }
+@keyframes sp-y-l { 0% { transform: translateY(64px); } 28% { transform: translateY(-12px); } 55% { transform: translateY(30px); } 80% { transform: translateY(-9px); } 100% { transform: translateY(0); } }
+@keyframes sp-y-r { 0% { transform: translateY(20px); } 25% { transform: translateY(58px); } 52% { transform: translateY(-14px); } 78% { transform: translateY(16px); } 100% { transform: translateY(0); } }
+@keyframes sp-aim-l { from { transform: rotate(66deg); } to { transform: rotate(12deg); } }
+@keyframes sp-aim-r { from { transform: rotate(-66deg); } to { transform: rotate(-12deg); } }
+@keyframes sp-flap { from { transform: scaleX(1); } to { transform: scaleX(.2); } }
+@keyframes sp-merge-l { to { transform: translateX(46px) scale(.45); opacity: 0; } }
+@keyframes sp-merge-r { to { transform: translateX(-46px) scale(.45); opacity: 0; } }
+
+/* the heart: pops in as the butterflies dissolve, then beats twice */
+.heart { transition: transform .75s var(--ease), opacity .65s var(--ease); }
+.splash.is-leaving .heart { transform: scale(1.5); opacity: 0; }
+.heart__pop { animation: sp-pop .7s cubic-bezier(.34, 1.45, .64, 1) 2s both; }
+.heart__beat { animation: sp-beat .62s ease-in-out 2.65s 2; }
+@keyframes sp-pop { from { transform: scale(.35); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes sp-beat { 0%, 100% { transform: scale(1); } 18% { transform: scale(1.13); } 34% { transform: scale(1.02); } 52% { transform: scale(1.09); } 72% { transform: scale(1); } }
+.sp-glow { opacity: 0; animation: sp-glow 1.6s ease-out 2.05s both; }
+@keyframes sp-glow { 0% { opacity: 0; transform: scale(.5); } 40% { opacity: 1; } 100% { opacity: .55; transform: scale(1); } }
+.sp-ring { opacity: 0; animation: sp-ring 1s ease-out 2.05s both; }
+@keyframes sp-ring { 0% { opacity: .6; transform: scale(.6); } 100% { opacity: 0; transform: scale(2.1); } }
+
+.splash__skip {
+  position: absolute; left: 50%; bottom: max(1.6rem, env(safe-area-inset-bottom)); translate: -50% 0; background: none; border: 0;
+  padding: .6rem 1rem; font: 400 .7rem/1 var(--font-body); letter-spacing: .3em; text-transform: uppercase; color: var(--wine);
+  opacity: 0; animation: sp-skip .8s ease 1s forwards; cursor: pointer; transition: color .3s;
+}
+@keyframes sp-skip { to { opacity: .5; } }
+.splash__skip:hover, .splash__skip:focus-visible { color: var(--rose); animation-name: none; opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .splash { display: none !important; } }
 
 /* ---------- Music button ---------- */
 .music {
