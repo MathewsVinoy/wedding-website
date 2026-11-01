@@ -114,6 +114,14 @@ window.WEDDING_CONFIG = {
     { src: "images/gallery-8.svg", alt: "Our favourite place",        ratio: "4/3" }
   ],
 
+  /* ---- Splash (welcome) screen -------------------------------------------
+     A short intro: two butterflies fly together and become a heart, which beats
+     twice, then the invitation is revealed automatically (about 5 seconds).
+     Visitors can tap anywhere or press Esc/Enter to skip it. */
+  splash: {
+    enabled: true            // false = go straight to the invitation
+  },
+
   /* ---- Background music --------------------------------------------------
      By default a soft, original piano-style melody is generated live in the
      browser (nothing to download). Browsers only allow sound after the guest
