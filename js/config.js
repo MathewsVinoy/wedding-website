@@ -105,18 +105,18 @@ window.WEDDING_CONFIG = {
   // `ratio` is optional ("3/4", "1/1", "4/3") - it keeps the layout tidy while photos load.
   // The .svg files below are SAMPLE artwork - replace them with your real photographs (.jpg/.webp).
   gallery: [
-    { src: "images/gallery-1.svg", alt: "The couple together", ratio: "3/4" },
-    { src: "images/gallery-2.svg", alt: "A quiet moment", ratio: "1/1" },
-    { src: "images/gallery-3.svg", alt: "Laughing together", ratio: "4/5" },
-    { src: "images/gallery-4.svg", alt: "Walking hand in hand", ratio: "4/3" },
-    { src: "images/gallery-5.svg", alt: "The proposal", ratio: "3/4" },
-    { src: "images/gallery-6.svg", alt: "Adventures together", ratio: "1/1" },
+    { src: "images/gallery-1.webp", alt: "The couple together", ratio: "3/4" },
+    { src: "images/gallery-2.webp", alt: "A quiet moment", ratio: "1/1" },
+    { src: "images/gallery-3.webp", alt: "Laughing together", ratio: "4/5" },
+    { src: "images/gallery-4.webp", alt: "Walking hand in hand", ratio: "4/3" },
+    { src: "images/gallery-5.webp", alt: "The proposal", ratio: "3/4" },
+    { src: "images/gallery-6.webp", alt: "Adventures together", ratio: "1/1" },
     {
-      src: "images/gallery-7.svg",
+      src: "images/gallery-7.webp",
       alt: "Celebrating with family",
       ratio: "4/5",
     },
-    { src: "images/gallery-8.svg", alt: "Our favourite place", ratio: "4/3" },
+    { src: "images/gallery-8.webp", alt: "Our favourite place", ratio: "4/3" },
   ],
 
   /* ---- Splash (welcome) screen -------------------------------------------
@@ -142,7 +142,7 @@ window.WEDDING_CONFIG = {
 
   /* ---- Hero, hashtag, footer -------------------------------------------- */
   // Optional full-screen hero photo (e.g. "images/hero.jpg"). Leave "" for the elegant default.
-  heroImage: "", // SAMPLE - replace with your own photo
+  heroImage: "images/hero.webp", // SAMPLE - replace with your own photo
   hashtag: "#SitharaWedsRenath", // SAMPLE - "" to hide
 
   // Shown in the footer: "Designed & Developed by <developerName>"
