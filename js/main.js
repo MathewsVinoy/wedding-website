@@ -546,6 +546,56 @@
   }
 
   /* ------------------------------------------------------------------ *
+   * Splash screen: two butterflies fly together and become a heart.
+   * The animation itself is pure CSS. This code only (1) waits for it to end,
+   * (2) fades the splash away and starts the hero, and (3) handles "Skip".
+   * Safety nets: a timer here, plus a CSS-only fade and an inline script in
+   * index.html, so the site can never get stuck behind the splash.
+   * ------------------------------------------------------------------ */
+  function initSplash() {
+    const root = document.documentElement;
+    const splash = $('#splash');
+    const S = C.splash || {};
+    if (!splash) { root.classList.add('is-ready'); return; }
+    if (S.enabled === false || reduceMotion) { splash.remove(); root.classList.add('is-ready'); return; }
+
+    // keep the page still while the intro plays
+    const behind = $$('main, footer, .music');
+    behind.forEach(el => el.setAttribute('inert', ''));
+    document.body.classList.add('no-scroll');
+
+    let leaving = false;
+    const timers = [];
+
+    function leave(fast) {
+      if (leaving) return;
+      leaving = true;
+      timers.forEach(clearTimeout);
+      window.scrollTo(0, 0);
+      splash.classList.add('is-leaving');
+      if (fast === true) splash.classList.add('is-fast');
+      const wait = fast === true ? 500 : 750;
+      // the hero text starts to appear while the splash is still fading
+      timers.push(setTimeout(() => root.classList.add('is-ready'), wait * 0.35));
+      timers.push(setTimeout(() => {
+        splash.remove();
+        behind.forEach(el => el.removeAttribute('inert'));
+        document.body.classList.remove('no-scroll');
+      }, wait + 50));
+    }
+
+    // finish exactly when the second heartbeat ends (falls back to a timer if unsupported)
+    const beatEl = $('.heart__beat');
+    const beat = beatEl && beatEl.getAnimations ? beatEl.getAnimations()[0] : null;
+    if (beat && beat.finished) beat.finished.then(() => timers.push(setTimeout(leave, 100))).catch(() => {});
+    timers.push(setTimeout(leave, 4800));            // hard limit
+
+    $('#splash-skip').addEventListener('click', () => leave(true));
+    splash.addEventListener('click', () => leave(true));
+    document.addEventListener('keydown', e => { if (!leaving && (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ')) leave(true); });
+  }
+
+  /* ------------------------------------------------------------------ *
    * Scroll reveal
    * ------------------------------------------------------------------ */
   function initReveal() {
@@ -564,8 +614,7 @@
    * ------------------------------------------------------------------ */
   function initHeroArt() {
     const NS = 'http://www.w3.org/2000/svg';
-    const g = $('#mandala');
-    if (g) {
+    $$('#mandala, #splash-mandala').forEach(g => {
       const mk = (tag, attrs) => {
         const el = document.createElementNS(NS, tag);
         Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
@@ -576,13 +625,12 @@
       const petalB = 'M0 -128 C 16 -104, 16 -78, 0 -52 C -16 -78, -16 -104, 0 -128Z';
       for (let i = 0; i < 24; i++) g.appendChild(mk('path', { d: petalA, transform: `rotate(${i * 15})` }));
       for (let i = 0; i < 12; i++) g.appendChild(mk('path', { d: petalB, transform: `rotate(${i * 30 + 15})` }));
-    }
+    });
 
     if (reduceMotion) return;
-    const wrap = $('.petals');
     const colours = [['#F9C9D3', '#EE9DB0'], ['#FBDDE3', '#F0B1C0'], ['#F8DEC4', '#E6B98C'], ['#F5B5C4', '#DC7E96']];
     const count = window.innerWidth < 640 ? 10 : 18;
-    for (let i = 0; i < count; i++) {
+    $$('.petals').forEach(wrap => { for (let i = 0; i < count; i++) {
       const p = document.createElement('span');
       const [c1, c2] = colours[i % colours.length];
       p.className = 'petal';
@@ -590,13 +638,15 @@
         `left:${Math.random() * 100}%;--s:${8 + Math.random() * 10}px;--c1:${c1};--c2:${c2};` +
         `--t:${11 + Math.random() * 10}s;--delay:${-Math.random() * 20}s;--sway:${(Math.random() * 120 - 60).toFixed(0)}px`;
       wrap.appendChild(p);
-    }
+    } });
   }
 
   /* ------------------------------------------------------------------ *
    * Start
    * ------------------------------------------------------------------ */
+  window.__weddingBooted = true;
   initBindings();
+  initSplash();
   initCouple();
   renderEvents();
   renderGallery();
