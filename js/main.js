@@ -44,8 +44,10 @@
   if (!isValidDate) console.error('config.date is not a valid date. Use the format 2027-02-14T10:30:00+05:30');
 
   // Values that are computed rather than typed in the config
+  const dp = isValidDate ? parts(weddingDate, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : {};
   const view = Object.assign({}, C, {
     display: {
+      weekday: dp.weekday || '', day: dp.day || '', month: dp.month || '', year: dp.year || '',
       dateLong: isValidDate ? dateLong(weddingDate) : '',
       dateShort: isValidDate ? dateShort(weddingDate) : '',
       time: isValidDate ? timeLabel(weddingDate) : ''
@@ -380,10 +382,15 @@
 
   /* ------------------------------------------------------------------ *
    * Background music
-   * Browsers block sound until the visitor interacts with the page, so music
-   * starts on the first tap/click/key press. The button toggles it any time.
-   * Default: a soft, original piano-style melody generated live in the browser
-   * (no audio file needed). Or set music.src in config.js to use your own MP3.
+   * - Tries to start by itself as soon as the page opens.
+   * - Browsers often refuse sound before the visitor touches the page. When that
+   *   happens the button changes to a pulsing "Tap to play music", and the very
+   *   first tap/click/key press anywhere on the page starts the music.
+   * - The page is a single page, so the music is never interrupted or restarted
+   *   when scrolling between sections. It plays until the visitor turns it off
+   *   (remembered for the rest of the visit) or closes the tab.
+   * Default sound: a soft, original piano-style melody generated in the browser.
+   * Set music.src in config.js to use your own MP3 instead.
    * ------------------------------------------------------------------ */
   function initMusic() {
     const M = C.music || {};
@@ -393,7 +400,7 @@
     const audio = $('#bg-audio');
     const label = $('.music__label', btn);
     const volume = typeof M.volume === 'number' ? M.volume : 0.4;
-    let playing = false, userChose = false, fileFailed = !M.src;
+    let fileFailed = !M.src;
     let ctx = null, master = null, timer = null, nextTime = 0, step = 0;
 
     const mtof = m => 440 * Math.pow(2, (m - 69) / 12);
@@ -469,80 +476,118 @@
       }
     }
 
-    function setUI(on) {
-      playing = on;
-      btn.classList.toggle('is-playing', on);
-      btn.setAttribute('aria-pressed', String(on));
-      btn.setAttribute('aria-label', on ? 'Pause background music' : 'Play background music');
-      label.textContent = on ? 'Music on' : 'Play music';
-    }
+    /* ---- engine: start / stop the sound ---- */
+    const wait = ms => new Promise(r => setTimeout(r, ms));
 
-    function startSynth() {
-      if (!ctx && !buildAudio()) return false;
-      ctx.resume();
+    function beginSynth() {
       master.gain.cancelScheduledValues(ctx.currentTime);
       master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
       master.gain.linearRampToValueAtTime(volume, ctx.currentTime + 3);
-      nextTime = ctx.currentTime + 0.15;
-      clearInterval(timer);
-      schedule();
-      timer = setInterval(schedule, 300);
+      if (!timer) {                                // already scheduling? then don't start a second loop
+        nextTime = ctx.currentTime + 0.15;
+        schedule();
+        timer = setInterval(schedule, 300);
+      }
+    }
+
+    // Resolves true if sound is really playing, false if the browser blocked it.
+    async function engineStart(timeout) {
+      if (!fileFailed) {
+        audio.volume = volume;
+        if (!audio.src) audio.src = M.src;
+        try { await audio.play(); return true; }
+        catch (e) {
+          if (e && e.name === 'NotAllowedError') return false;   // blocked: try again after a tap
+          fileFailed = true;                                      // broken file: use the built-in melody
+          console.warn(`Could not play music file "${M.src}". Using the built-in melody instead.`);
+        }
+      }
+      if (!ctx && !buildAudio()) return false;
+      const running = await Promise.race([
+        ctx.resume().then(() => ctx.state === 'running').catch(() => false),
+        wait(timeout).then(() => false)            // a blocked resume() never settles, so don't wait forever
+      ]);
+      if (!running) return false;
+      beginSynth();
       return true;
     }
 
-    function stopSynth() {
+    function engineStop() {
+      audio.pause();
       if (!ctx) return;
       master.gain.cancelScheduledValues(ctx.currentTime);
       master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
       master.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.7);
-      clearInterval(timer);
-      setTimeout(() => { if (!playing && ctx) ctx.suspend(); }, 900);
+      setTimeout(() => {
+        if (state !== 'on' && ctx) { clearInterval(timer); timer = null; ctx.suspend(); }
+      }, 900);
     }
 
-    function start() {
-      setUI(true);
-      if (!fileFailed) {
-        audio.volume = volume;
-        if (!audio.src) audio.src = M.src;
-        audio.play().catch(() => { fileFailed = true; if (playing && !startSynth()) setUI(false); });
-        return;
-      }
-      if (!startSynth()) setUI(false);
+    /* ---- state: 'on' (playing) | 'off' (turned off) | 'blocked' (browser refused autoplay) ---- */
+    const KEY = 'wedding-music-off';
+    const remember = off => { try { off ? sessionStorage.setItem(KEY, '1') : sessionStorage.removeItem(KEY); } catch (e) {} };
+    const wasTurnedOff = () => { try { return sessionStorage.getItem(KEY) === '1'; } catch (e) { return false; } };
+
+    let state = 'off';
+    let userChose = false;
+
+    function render() {
+      btn.classList.toggle('is-playing', state === 'on');
+      btn.classList.toggle('is-blocked', state === 'blocked');
+      btn.setAttribute('aria-pressed', String(state === 'on'));
+      btn.setAttribute('aria-label', state === 'on' ? 'Turn background music off' : 'Turn background music on');
+      label.textContent = state === 'on' ? 'Music on' : state === 'blocked' ? 'Tap to play music' : 'Music off';
     }
 
-    function stop() {
-      setUI(false);
-      audio.pause();
-      stopSynth();
+    async function turnOn(timeout) {
+      const ok = await engineStart(timeout);
+      if (ok) state = 'on';
+      else if (state !== 'on') state = 'blocked';  // never downgrade a success that arrived meanwhile
+      render();
+      return ok;
+    }
+
+    function turnOff() {
+      state = 'off';
+      engineStop();
+      render();
     }
 
     audio.addEventListener('error', () => {
       if (!M.src || fileFailed) return;
       fileFailed = true;
       console.warn(`Could not load music file "${M.src}". Using the built-in melody instead.`);
-      if (playing) startSynth();
+      if (state === 'on') engineStart(1500);
     });
 
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       userChose = true;
-      if (playing) stop(); else start();
+      if (state === 'on') { remember(true); turnOff(); }
+      else { remember(false); await turnOn(1500); }
     });
 
-    // first interaction anywhere starts the music (unless they already used the button)
-    const events = ['pointerdown', 'keydown', 'touchend'];
-    const first = e => {
-      events.forEach(n => document.removeEventListener(n, first, true));
-      if (userChose || (e.target && e.target.closest && e.target.closest('#music-toggle'))) return;
-      start();
-    };
-    events.forEach(n => document.addEventListener(n, first, true));
+    /* ---- first touch anywhere starts the music when autoplay was blocked ---- */
+    const autoplay = M.autoplay !== false && !wasTurnedOff();
+    function onGesture(e) {
+      if (e.type === 'keydown' && e.key === 'Escape') return;
+      if (e.target && e.target.closest && e.target.closest('#music-toggle')) return;
+      if (state === 'on') {                        // already playing: just wake the audio if the phone paused it
+        if (ctx && ctx.state !== 'running') ctx.resume();
+        return;
+      }
+      if (autoplay && !userChose) turnOn(1500);
+    }
+    ['pointerdown', 'pointerup', 'touchend', 'keydown', 'click'].forEach(n => document.addEventListener(n, onGesture, true));
 
-    // pause while the tab is hidden
+    // coming back to the tab (or the phone un-pausing the audio): make sure it is still playing
     document.addEventListener('visibilitychange', () => {
-      if (!playing) return;
-      if (document.hidden) { if (ctx) ctx.suspend(); audio.pause(); }
-      else { if (ctx && fileFailed) ctx.resume(); if (!fileFailed) audio.play().catch(() => {}); }
+      if (document.hidden || state !== 'on') return;
+      if (ctx && ctx.state !== 'running') ctx.resume().catch(() => {});
+      if (!fileFailed && audio.paused) audio.play().catch(() => {});
     });
+
+    render();
+    if (autoplay) turnOn(700);                     // try to start automatically right away
   }
 
   /* ------------------------------------------------------------------ *
@@ -560,7 +605,7 @@
     if (S.enabled === false || reduceMotion) { splash.remove(); root.classList.add('is-ready'); return; }
 
     // keep the page still while the intro plays
-    const behind = $$('main, footer, .music');
+    const behind = $$('main, footer');
     behind.forEach(el => el.setAttribute('inert', ''));
     document.body.classList.add('no-scroll');
 
@@ -593,6 +638,43 @@
     $('#splash-skip').addEventListener('click', () => leave(true));
     splash.addEventListener('click', () => leave(true));
     document.addEventListener('keydown', e => { if (!leaving && (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ')) leave(true); });
+  }
+
+  /* ------------------------------------------------------------------ *
+   * Event voucher: tap / click (or Enter / Space) to unfold it and reveal the date
+   * ------------------------------------------------------------------ */
+  function initVoucher() {
+    const v = $('#voucher');
+    if (!v) return;
+    const hint = $('#voucher-hint span');
+
+    function set(open) {
+      v.classList.toggle('is-open', open);
+      v.setAttribute('aria-expanded', String(open));
+      v.setAttribute('aria-label', open
+        ? 'Event voucher, open. Press to fold it closed again.'
+        : 'Event voucher, closed. Press to open it and see the date.');
+      if (hint) hint.textContent = open ? 'Tap to fold it closed' : 'Tap the voucher to open it';
+    }
+    set(false);
+
+    function toggle() {
+      const open = !v.classList.contains('is-open');
+      set(open);
+      if (!open) return;
+      // once it has unfolded, make sure the whole voucher is on screen (matters on short screens)
+      setTimeout(() => {
+        const r = v.getBoundingClientRect();
+        if (r.bottom > window.innerHeight - 16 || r.top < 16) {
+          v.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+        }
+      }, reduceMotion ? 0 : 1150);
+    }
+
+    v.addEventListener('click', toggle);
+    v.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
   }
 
   /* ------------------------------------------------------------------ *
@@ -654,6 +736,7 @@
   initCountdown();
   initLocation();
   initCalendar();
+  initVoucher();
   initMusic();
   initHeroArt();
   initReveal();
