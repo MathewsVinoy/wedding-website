@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Sithara &amp; Renath | Wedding Invitation</title>
   <meta name="description" content="You are invited to the wedding of Sithara &amp; Renath. Find the schedule, venue, and photos here.">
   <meta name="theme-color" content="#F6D0D8">
@@ -151,30 +151,67 @@
           <div class="ornament"><i></i></div>
         </header>
 
-        <div class="details">
-          <article class="detail reveal">
-            <div class="detail__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+        <div class="voucher-wrap reveal">
+          <div class="voucher" id="voucher" role="button" tabindex="0" aria-expanded="false" aria-controls="voucher-inside" aria-label="Event voucher. Press to open it and see the date, time and venue.">
+            <div class="voucher__stage">
+
+              <!-- inner panel: folded up behind the cover, unfolds downward -->
+              <div class="vc__inside" id="voucher-inside">
+                <div class="vc__paper">
+                  <div class="vc__content">
+                    <p class="vc__eyebrow vc__in vc__in--1">Save the date</p>
+
+                    <div class="vc__row vc__in vc__in--2">
+                      <p class="vc__day" data-bind="display.day"></p>
+                      <span class="vc__rule" aria-hidden="true"></span>
+                      <div class="vc__meta">
+                        <p class="vc__weekday" data-bind="display.weekday"></p>
+                        <p class="vc__month" data-bind="display.month"></p>
+                        <p class="vc__year" data-bind="display.year"></p>
+                      </div>
+                    </div>
+
+                    <div class="vc__details vc__in vc__in--3">
+                      <div class="vc__detail">
+                        <span class="vc__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.2 2"/></svg></span>
+                        <div class="vc__text">
+                          <p class="vc__label">Time</p>
+                          <p class="vc__value" data-bind="display.time"></p>
+                        </div>
+                      </div>
+                      <span class="vc__vrule" aria-hidden="true"></span>
+                      <div class="vc__detail">
+                        <span class="vc__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.3"/></svg></span>
+                        <div class="vc__text">
+                          <p class="vc__label">Venue</p>
+                          <p class="vc__value" data-bind="venue.name"></p>
+                          <p class="vc__sub" data-bind="venue.city"></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="vc__perf" aria-hidden="true"></span>
+                  <span class="vc__shade" aria-hidden="true"></span>
+                </div>
+              </div>
+
+              <!-- cover: the closed voucher -->
+              <div class="vc__cover">
+                <p class="vc__cover-eyebrow">You are invited</p>
+                <p class="vc__mono" data-monogram>S &amp; R</p>
+                <p class="vc__cover-names"><span data-bind="bride.name"></span> <em>&amp;</em> <span data-bind="groom.name"></span></p>
+                <span class="vc__orn" aria-hidden="true"><i></i></span>
+                <p class="vc__tap"><span>Tap to open</span><i aria-hidden="true"></i></p>
+              </div>
+
+              <span class="vc__seal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.9c0 5.4-7.5 10-7.5 10z"/></svg></span>
+              <span class="vc__notch vc__notch--l" aria-hidden="true"></span>
+              <span class="vc__notch vc__notch--r" aria-hidden="true"></span>
             </div>
-            <h3>Date</h3>
-            <p class="detail__main" data-bind="display.dateLong"></p>
-          </article>
-          <article class="detail reveal" style="--d:100ms">
-            <div class="detail__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.2 2"/></svg>
-            </div>
-            <h3>Time</h3>
-            <p class="detail__main" data-bind="display.time"></p>
-          </article>
-          <article class="detail reveal" style="--d:200ms">
-            <div class="detail__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.3"/></svg>
-            </div>
-            <h3>Venue</h3>
-            <p class="detail__main" data-bind="venue.name"></p>
-            <p class="detail__sub" data-bind="venue.address"></p>
-          </article>
+          </div>
+          <p class="voucher__hint" id="voucher-hint" aria-live="polite"><span>Tap the voucher to open it</span></p>
         </div>
+
 
         <p class="dresscode reveal" id="dresscode" hidden>Dress code &middot; <span data-bind="dressCode"></span></p>
 
