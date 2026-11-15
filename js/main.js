@@ -328,20 +328,171 @@
    * Location & map
    * ------------------------------------------------------------------ */
   function initLocation() {
-    const v = C.venue || {};
-    const q = encodeURIComponent(v.mapQuery || `${v.name || ''} ${v.address || ''}`);
-    const embed = v.mapEmbedUrl || `https://maps.google.com/maps?q=${q}&z=15&output=embed`;
-    $('#map').src = embed;
-    $('#btn-openmap').href = v.mapLink || `https://www.google.com/maps/search/?api=1&query=${q}`;
-    $('#btn-directions').href = v.mapLink || `https://www.google.com/maps/dir/?api=1&destination=${q}`;
+    // one place (ceremony) or two (ceremony + reception) - two get a small tab switcher
+    const places = [{ label: 'Ceremony', v: C.venue || {} }];
+    if (C.reception && (C.reception.name || C.reception.mapQuery)) places.push({ label: 'Reception', v: C.reception });
+    const tabs = $('#loc-tabs'), notes = $('#venue-notes');
 
-    const notes = $('#venue-notes');
-    (v.notes || []).forEach(n => {
-      const li = document.createElement('li');
-      li.textContent = n;
-      notes.appendChild(li);
+    function show(i) {
+      const v = places[i].v;
+      const q = encodeURIComponent(v.mapQuery || `${v.name || ''} ${v.address || ''}`);
+      $('#map').src = v.mapEmbedUrl || `https://maps.google.com/maps?q=${q}&z=15&output=embed`;
+      $('#btn-openmap').href = v.mapLink || `https://www.google.com/maps/search/?api=1&query=${q}`;
+      $('#btn-directions').href = v.mapLink || `https://www.google.com/maps/dir/?api=1&destination=${q}`;
+      $('#loc-name').textContent = v.name || '';
+      $('#loc-address').textContent = v.address || '';
+      $('#loc-address').hidden = !v.address;
+      $('#map').title = `Map showing ${v.name || 'the venue'}`;
+      notes.textContent = '';
+      (v.notes || []).forEach(n => { const li = document.createElement('li'); li.textContent = n; notes.appendChild(li); });
+      notes.hidden = !(v.notes || []).length;
+      [...tabs.children].forEach((b, k) => { b.setAttribute('aria-selected', String(k === i)); b.tabIndex = k === i ? 0 : -1; });
+    }
+
+    if (places.length > 1) {
+      $('#loc-title').textContent = 'The venues';
+      tabs.hidden = false;
+      places.forEach((p, i) => {
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'loc-tab'; b.setAttribute('role', 'tab'); b.textContent = p.label;
+        b.addEventListener('click', () => show(i));
+        b.addEventListener('keydown', e => {
+          if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+          const n = (i + (e.key === 'ArrowRight' ? 1 : -1) + places.length) % places.length;
+          show(n); tabs.children[n].focus();
+        });
+        tabs.appendChild(b);
+      });
+    }
+    show(0);
+  }
+
+  /* ------------------------------------------------------------------ *
+   * Video section: your own MP4, or a YouTube / Vimeo link
+   * ------------------------------------------------------------------ */
+  function videoEmbedUrl(src) {
+    let u;
+    try { u = new URL(src, location.href); } catch (e) { return ''; }
+    const h = u.hostname.replace(/^www\./, '');
+    let id = '';
+    if (h === 'youtu.be') id = u.pathname.slice(1);
+    else if (h.endsWith('youtube.com')) id = u.searchParams.get('v') || (u.pathname.match(/\/(?:embed|shorts|live)\/([\w-]+)/) || [])[1] || '';
+    if (/^[\w-]{6,15}$/.test(id)) return `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`;
+    if (h.endsWith('vimeo.com')) {
+      const vid = (u.pathname.match(/\/(\d+)/) || [])[1];
+      if (vid) return `https://player.vimeo.com/video/${vid}?autoplay=1&playsinline=1`;
+    }
+    return '';
+  }
+
+  function initVideo() {
+    const V = C.video || {};
+    const sec = $('#video');
+    if (!sec || V.enabled === false) return;
+    sec.hidden = false;
+    if (V.eyebrow) $('#video-eyebrow').textContent = V.eyebrow;
+    if (V.title) $('#video-title').textContent = V.title;
+    if (V.caption) { const l = $('#video-lead'); l.textContent = V.caption; l.hidden = false; }
+
+    const film = $('#film');
+    const portrait = String(V.ratio || '').replace(/\s/g, '') === '9/16';
+    film.classList.toggle('film--portrait', portrait);
+    film.style.setProperty('--film-ratio', portrait ? '9 / 16' : String(V.ratio || '16/9').replace('/', ' / '));
+
+    const frame = document.createElement('div');
+    frame.className = 'film__frame';
+    film.appendChild(frame);
+
+    const src = (V.src || '').trim();
+    if (!src) {                                   // nothing set yet: a clear "coming soon" card
+      frame.classList.add('is-empty');
+      frame.innerHTML = '<div class="film__soon"><span class="film__play" aria-hidden="true"></span>' +
+        '<p>Our film is coming soon</p></div>';
+      return;
+    }
+
+    const embed = videoEmbedUrl(src);
+    const cover = document.createElement('button');
+    cover.type = 'button';
+    cover.className = 'film__cover';
+    cover.setAttribute('aria-label', `Play video: ${V.title || 'our film'}`);
+    if (V.poster) cover.style.backgroundImage = `url("${String(V.poster).replace(/"/g, '%22')}")`;
+    cover.innerHTML = '<span class="film__play" aria-hidden="true"></span><span class="film__label">Watch the film</span>';
+    frame.appendChild(cover);
+
+    const hold = on => window.dispatchEvent(new CustomEvent(on ? 'wedding:media-play' : 'wedding:media-stop'));
+
+    cover.addEventListener('click', () => {
+      if (embed) {                                // YouTube / Vimeo: load the player only when asked (fast page, no tracking)
+        const f = document.createElement('iframe');
+        f.src = embed; f.title = V.title || 'Wedding film'; f.allowFullscreen = true;
+        f.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+        f.referrerPolicy = 'strict-origin-when-cross-origin';
+        frame.replaceChildren(f);
+        hold(true);
+        return;
+      }
+      const v = document.createElement('video');   // your own file
+      v.controls = true; v.playsInline = true; v.preload = 'auto'; v.src = src;
+      if (V.poster) v.poster = V.poster;
+      v.setAttribute('controlsList', 'nodownload');
+      v.addEventListener('play', () => hold(true));
+      v.addEventListener('pause', () => hold(false));
+      v.addEventListener('ended', () => hold(false));
+      v.addEventListener('error', () => {
+        frame.replaceChildren();
+        frame.classList.add('is-empty');
+        frame.innerHTML = '<div class="film__soon"><p>Sorry, the video could not be loaded.</p></div>';
+        hold(false);
+      });
+      frame.replaceChildren(v);
+      v.play().catch(() => {});
     });
-    if (!(v.notes || []).length) notes.hidden = true;
+  }
+
+  /* ------------------------------------------------------------------ *
+   * Family regards (just above the footer)
+   * ------------------------------------------------------------------ */
+  function initRegards() {
+    const R = C.regards || {};
+    const sec = $('#regards');
+    if (!sec || R.enabled === false) return;
+    sec.hidden = false;
+    if (R.eyebrow) $('#regards-eyebrow').textContent = R.eyebrow;
+    if (R.heading) $('#regards-title').textContent = R.heading;
+    const msg = $('#regards-message');
+    (R.message || []).forEach(t => { const p = document.createElement('p'); p.textContent = t; msg.appendChild(p); });
+    msg.hidden = !(R.message || []).length;
+
+    const wrap = $('#regards-families');
+    const groups = (R.groups || []).filter(g => g && (g.names || []).length);
+    groups.forEach(g => {
+      const box = document.createElement('div');
+      box.className = 'family';
+      if (g.title) { const h = document.createElement('h3'); h.className = 'family__title'; h.textContent = g.title; box.appendChild(h); }
+      const ul = document.createElement('ul');
+      ul.className = 'family__names';
+      g.names.forEach(n => {
+        const p = typeof n === 'string' ? { name: n } : (n || {});
+        const li = document.createElement('li');
+        const nm = document.createElement('span'); nm.className = 'family__name'; nm.textContent = p.name || '';
+        li.appendChild(nm);
+        if (p.relation) { const r = document.createElement('span'); r.className = 'family__rel'; r.textContent = p.relation; li.appendChild(r); }
+        ul.appendChild(li);
+      });
+      box.appendChild(ul);
+      wrap.appendChild(box);
+    });
+    wrap.hidden = !groups.length;
+    wrap.dataset.count = groups.length;
+
+    const closing = $('#regards-closing');
+    if (R.closing || R.signoff) {
+      closing.textContent = '';
+      if (R.closing) { const s = document.createElement('span'); s.className = 'regards__line'; s.textContent = R.closing; closing.appendChild(s); }
+      if (R.signoff) { const s = document.createElement('span'); s.className = 'regards__sign'; s.textContent = R.signoff; closing.appendChild(s); }
+      closing.hidden = false;
+    }
   }
 
   /* ------------------------------------------------------------------ *
@@ -530,6 +681,8 @@
 
     let state = 'off';
     let userChose = false;
+    let mediaHold = false;          // a video is playing: keep the music quiet
+    let resumeAfter = false;
 
     function render() {
       btn.classList.toggle('is-playing', state === 'on');
@@ -561,7 +714,7 @@
     });
 
     btn.addEventListener('click', async () => {
-      userChose = true;
+      userChose = true; resumeAfter = false;
       if (state === 'on') { remember(true); turnOff(); }
       else { remember(false); await turnOn(1500); }
     });
@@ -571,6 +724,7 @@
     function onGesture(e) {
       if (e.type === 'keydown' && e.key === 'Escape') return;
       if (e.target && e.target.closest && e.target.closest('#music-toggle')) return;
+      if (mediaHold) return;
       if (state === 'on') {                        // already playing: just wake the audio if the phone paused it
         if (ctx && ctx.state !== 'running') ctx.resume();
         return;
@@ -584,6 +738,17 @@
       if (document.hidden || state !== 'on') return;
       if (ctx && ctx.state !== 'running') ctx.resume().catch(() => {});
       if (!fileFailed && audio.paused) audio.play().catch(() => {});
+    });
+
+    // the video section pauses the music while a film plays, and brings it back afterwards
+    window.addEventListener('wedding:media-play', () => {
+      mediaHold = true;
+      if (state === 'on') { resumeAfter = true; turnOff(); }
+    });
+    window.addEventListener('wedding:media-stop', () => {
+      mediaHold = false;
+      if (resumeAfter) { resumeAfter = false; turnOn(1500); }
+      else resumeAfter = false;
     });
 
     render();
@@ -735,6 +900,8 @@
   initLightbox();
   initCountdown();
   initLocation();
+  initVideo();
+  initRegards();
   initCalendar();
   initVoucher();
   initMusic();

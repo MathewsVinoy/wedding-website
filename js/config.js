@@ -32,7 +32,7 @@ window.WEDDING_CONFIG = {
 
   /* ---- Date & time ----------------------------------------------------- */
   // Format: YYYY-MM-DDTHH:MM:SS+05:30   (the +05:30 is India Standard Time)
-  date: "2027-02-14T10:30:00+05:30", // SAMPLE
+  date: "2026-12-31T10:30:00+05:30", // Wedding day (31 Dec 2026). TIME IS A PLACEHOLDER - set the real ceremony time
   timeZone: "Asia/Kolkata", // times are always shown in the venue's time zone
   durationHours: 5, // used for "Add to calendar"
 
@@ -49,22 +49,29 @@ window.WEDDING_CONFIG = {
   },
 
   /* ---- Venue & map ------------------------------------------------------ */
+  // Where the wedding ceremony is held
   venue: {
-    name: "City Palace", // SAMPLE
-    address: "Gangori Ghat Rd, Udaipur, Rajasthan 313001, India", // SAMPLE
-    city: "Udaipur, Rajasthan", // shown in the hero
-    // What Google Maps should search for. Usually the venue name + city works best.
-    mapQuery: "City Palace, Udaipur, Rajasthan", // SAMPLE
-    // Optional: paste a full Google Maps share link to override the buttons.
-    mapLink: "",
-    // Optional: paste an <iframe src> from Google Maps > Share > Embed a map.
+    name: "Infant Jesus Church",
+    address: "Infant Jesus Church, Ranni, Kerala",
+    city: "Ranni, Kerala", // shown in the hero
+    // What Google Maps should search for (drives the embedded map).
+    mapQuery: "Infant Jesus Church, Ranni, Kerala",
+    // Opened by the "Get directions" / "Open in Google Maps" buttons.
+    mapLink: "https://maps.app.goo.gl/1GEhWhbeKaZLDyqQ6?g_st=ic",
+    // Optional: paste an <iframe src> from Google Maps > Share > Embed a map for an exact pin.
     mapEmbedUrl: "",
     // Optional travel notes (leave [] to hide)
-    notes: [
-      "Nearest airport: Maharana Pratap Airport (UDR), about 40 minutes away.",
-      "Complimentary valet parking will be available at the main gate.",
-      "A block of rooms has been reserved for out-of-town guests - please ask the family.",
-    ],
+    notes: [],
+  },
+
+  // Where the wedding reception is held (remove this whole block to show only one venue)
+  reception: {
+    name: "Mar Athanasius Marthoma Auditorium & Convention Nagar",
+    address: "Mar Athanasius Marthoma Auditorium & Convention Nagar, Ranni, Kerala",
+    mapQuery: "Mar Athanasius Marthoma Auditorium & Convention Nagar, Ranni, Kerala",
+    mapLink: "https://maps.app.goo.gl/wEXsBJVhpAiiy7LF6?g_st=ic",
+    mapEmbedUrl: "",
+    notes: [],
   },
 
   dressCode: "Traditional attire in soft jewel tones", // optional; "" to hide
@@ -73,30 +80,23 @@ window.WEDDING_CONFIG = {
   // Add, remove or reorder events freely. `start` uses the same format as `date`.
   events: [
     {
-      title: "Mehendi & Music",
-      start: "2027-02-12T16:00:00+05:30",
-      venue: "Garden Courtyard",
-      description: "An afternoon of henna, folk music and good company.",
-    },
-    {
-      title: "Haldi",
-      start: "2027-02-13T10:00:00+05:30",
-      venue: "Poolside Lawn",
-      description:
-        "Bright yellows, marigolds and plenty of laughter. Wear something you don't mind staining.",
+      title: "Engagement",
+      start: "2026-12-29T16:00:00+05:30", // TIME IS A PLACEHOLDER
+      venue: "",
+      description: "Exchanging rings and promises together with our families.",
     },
     {
       title: "Wedding Ceremony",
-      start: "2027-02-14T10:30:00+05:30",
-      venue: "Main Pavilion",
+      start: "2026-12-31T10:30:00+05:30", // TIME IS A PLACEHOLDER
+      venue: "Infant Jesus Church, Ranni",
       description:
-        "The sacred ceremony, followed by blessings and a celebratory lunch.",
+        "The sacred ceremony, followed by blessings and the families' greetings.",
     },
     {
-      title: "Reception & Dinner",
-      start: "2027-02-14T19:00:00+05:30",
-      venue: "Grand Ballroom",
-      description: "An evening of dinner, dancing and toasts to the newlyweds.",
+      title: "Wedding Reception",
+      start: "2026-12-31T18:00:00+05:30", // TIME IS A PLACEHOLDER
+      venue: "Mar Athanasius Marthoma Auditorium & Convention Nagar, Ranni",
+      description: "An evening of dinner, celebration and good wishes.",
     },
   ],
 
@@ -105,7 +105,7 @@ window.WEDDING_CONFIG = {
   // `ratio` is optional ("3/4", "1/1", "4/3") - it keeps the layout tidy while photos load.
   // The .svg files below are SAMPLE artwork - replace them with your real photographs (.jpg/.webp).
   gallery: [
-    { src: "images/gallery-1.webp", alt: "The couple together", ratio: "3/4" },
+    { src: "images/gallery-1.webp", alt: "The couple ", ratio: "3/4" },
     { src: "images/gallery-2.webp", alt: "A quiet moment", ratio: "1/1" },
     { src: "images/gallery-3.webp", alt: "Laughing together", ratio: "4/5" },
     { src: "images/gallery-4.webp", alt: "Walking hand in hand", ratio: "4/3" },
@@ -138,6 +138,60 @@ window.WEDDING_CONFIG = {
     enabled: true, // false removes the music button entirely
     src: "", // e.g. "audio/our-song.mp3"  ("" = built-in melody)
     volume: 0.4, // 0 (silent) to 1 (full)
+  },
+
+  /* ---- Video section ------------------------------------------------------
+     Shown between the gallery and the countdown. Set `src` to ONE of:
+       - a video file you add to the /video folder, e.g. "video/our-film.mp4" (MP4 / H.264 plays everywhere)
+       - a YouTube or Vimeo link, e.g. "https://www.youtube.com/watch?v=XXXXXXXXXXX"
+     `poster` is an optional cover picture (e.g. "images/film-cover.webp").
+     `ratio` is "16/9" (normal) or "9/16" (video filmed upright on a phone).
+     Leave `src` empty to show a "coming soon" card; `enabled: false` hides the section. */
+  video: {
+    enabled: true,
+    eyebrow: "Our story",
+    title: "A little film for you",
+    caption: "A few moments from our journey, before the big day.",
+    src: "",                   // <- put your video here
+    poster: "",
+    ratio: "16/9",
+  },
+
+  /* ---- Family regards (shown just above the footer) ---------------------- */
+  // Each group is a heading with a list of names. Add, remove or reorder freely.
+  regards: {
+    enabled: true,
+    eyebrow: "With love & gratitude",
+    heading: "With warm regards",
+    message: [
+      "Every blessing, every prayer and every kind word has carried us to this day. " +
+        "Our families have been our strength, and we are grateful beyond words.",
+      "Thank you for being part of our story. Your presence will make our day complete.",
+    ],
+    // Each person is { name, relation }. A plain text name also works.
+    groups: [
+      {
+        title: "Sithara's Family",
+        names: [
+          { name: "V T Antony", relation: "Father" },
+          { name: "Jessy Antony", relation: "Mother" },
+          { name: "Sagara Antony", relation: "Sister" },
+          { name: "Sandesh V Antony", relation: "Brother" },
+        ],
+      },
+      {
+        title: "Renath's Family",
+        names: [
+          { name: "Sunny Abraham", relation: "Father" },
+          { name: "Jiji Sunny", relation: "Mother" },
+          { name: "Tessel Sunny", relation: "Brother" },
+          { name: "Sajitha Sunny", relation: "Sister-in-law" },
+          { name: "Raiden Tessel Sunny", relation: "Nephew" },
+        ],
+      },
+    ],
+    closing: "With love and gratitude,",                       // "" to hide
+    signoff: "Sithara & Renath",                               // "" to hide
   },
 
   /* ---- Hero, hashtag, footer -------------------------------------------- */

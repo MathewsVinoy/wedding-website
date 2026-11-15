@@ -247,6 +247,19 @@
       </div>
     </section>
 
+    <!-- ===================== VIDEO ===================== -->
+    <section class="section" id="video" hidden>
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow" id="video-eyebrow">Our story</p>
+          <h2 class="section-title" id="video-title">A little film for you</h2>
+          <div class="ornament"><i></i></div>
+          <p class="section-lead" id="video-lead" hidden></p>
+        </header>
+        <div class="film reveal" id="film"></div>
+      </div>
+    </section>
+
     <!-- ===================== COUNTDOWN ===================== -->
     <section class="section section--dark countdown" id="countdown">
       <div class="container">
@@ -271,14 +284,16 @@
       <div class="container">
         <header class="section-head reveal">
           <p class="eyebrow">Getting there</p>
-          <h2 class="section-title">The venue</h2>
+          <h2 class="section-title" id="loc-title">The venue</h2>
           <div class="ornament"><i></i></div>
         </header>
 
+        <div class="loc-tabs reveal" id="loc-tabs" role="tablist" aria-label="Choose a venue" hidden></div>
+
         <div class="location">
           <div class="location__info reveal">
-            <h3 data-bind="venue.name"></h3>
-            <p class="location__address" data-bind="venue.address"></p>
+            <h3 id="loc-name"></h3>
+            <p class="location__address" id="loc-address"></p>
             <ul class="location__notes" id="venue-notes"></ul>
             <div class="location__actions">
               <a class="btn btn--wine" id="btn-directions" target="_blank" rel="noopener">Get directions</a>
@@ -289,6 +304,19 @@
             <iframe id="map" title="Map showing the wedding venue" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
           </div>
         </div>
+      </div>
+    </section>
+    <!-- ===================== FAMILY REGARDS ===================== -->
+    <section class="section regards" id="regards" hidden>
+      <div class="container container--narrow">
+        <header class="section-head reveal">
+          <p class="eyebrow" id="regards-eyebrow">With love &amp; gratitude</p>
+          <h2 class="regards__title" id="regards-title">With warm regards</h2>
+          <div class="ornament"><i></i></div>
+        </header>
+        <div class="regards__message reveal" id="regards-message"></div>
+        <div class="regards__families reveal" id="regards-families"></div>
+        <p class="regards__closing reveal" id="regards-closing" hidden></p>
       </div>
     </section>
 
