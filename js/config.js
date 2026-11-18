@@ -67,8 +67,10 @@ window.WEDDING_CONFIG = {
   // Where the wedding reception is held (remove this whole block to show only one venue)
   reception: {
     name: "Mar Athanasius Marthoma Auditorium & Convention Nagar",
-    address: "Mar Athanasius Marthoma Auditorium & Convention Nagar, Ranni, Kerala",
-    mapQuery: "Mar Athanasius Marthoma Auditorium & Convention Nagar, Ranni, Kerala",
+    address:
+      "Mar Athanasius Marthoma Auditorium & Convention Nagar, Ranni, Kerala",
+    mapQuery:
+      "Mar Athanasius Marthoma Auditorium & Convention Nagar, Ranni, Kerala",
     mapLink: "https://maps.app.goo.gl/wEXsBJVhpAiiy7LF6?g_st=ic",
     mapEmbedUrl: "",
     notes: [],
@@ -152,7 +154,7 @@ window.WEDDING_CONFIG = {
     eyebrow: "Our story",
     title: "A little film for you",
     caption: "A few moments from our journey, before the big day.",
-    src: "",                   // <- put your video here
+    src: "video/video.mp4", // <- put your video here
     poster: "",
     ratio: "16/9",
   },
@@ -190,8 +192,8 @@ window.WEDDING_CONFIG = {
         ],
       },
     ],
-    closing: "With love and gratitude,",                       // "" to hide
-    signoff: "Sithara & Renath",                               // "" to hide
+    closing: "With love and gratitude,", // "" to hide
+    signoff: "Sithara & Renath", // "" to hide
   },
 
   /* ---- Hero, hashtag, footer -------------------------------------------- */
