@@ -13,7 +13,6 @@ window.WEDDING_CONFIG = {
     fullName: "Sithara Antony", // SAMPLE
     role: "The Bride",
     parents: "Daughter of Mr. & Mrs. Antony", // SAMPLE
-    photo: "images/bride.webp", // SAMPLE - replace with images/bride.jpg
     about:
       "Warm, thoughtful and endlessly creative, Sithara lights up every room she walks into. " +
       "She loves old songs, early mornings and long conversations over chai.", // SAMPLE
@@ -24,10 +23,23 @@ window.WEDDING_CONFIG = {
     fullName: "Renath Sunny", // SAMPLE
     role: "The Groom",
     parents: "Son of Mr. & Mrs. Sunny", // SAMPLE
-    photo: "images/groom.webp", // SAMPLE - replace with images/groom.jpg
     about:
       "Calm, kind and quick to laugh, Renath is the friend everyone calls first. " +
       "He loves travel, good food and finding the best view in every city.", // SAMPLE
+  },
+
+  /* ---- Couple portrait ("Meet the couple" section) ----------------------
+     ONE photograph of the two of you together. Copy it into /images (e.g. images/couple.webp or .jpg),
+     ideally landscape and about 1600 px wide. Until the file exists, a clearly marked placeholder
+     frame ("Our photograph - coming soon") is shown in its place.
+     ratio: shape of the frame ("3/2" landscape, "4/5" portrait, "1/1" square).
+     position: which part to keep when cropping, e.g. "center 30%" keeps faces higher up. */
+  couple: {
+    enabled: true,
+    photo: "images/new.webp",
+    alt: "Renath and Sithara together",
+    ratio: "3/2",
+    position: "center 30%",
   },
 
   /* ---- Date & time ----------------------------------------------------- */
@@ -45,7 +57,7 @@ window.WEDDING_CONFIG = {
         "we request the honour of your presence as we begin our new life together.",
       "Your love and good wishes mean the world to us - we can't wait to celebrate with you.",
     ],
-    signature: "With love, the families of Antony & Sunny", // SAMPLE
+    signature: "With love, the families of Sunny & Antony", // SAMPLE
   },
 
   /* ---- Venue & map ------------------------------------------------------ */
@@ -154,7 +166,7 @@ window.WEDDING_CONFIG = {
     eyebrow: "Our story",
     title: "A little film for you",
     caption: "A few moments from our journey, before the big day.",
-    src: "video/video.mp4", // <- put your video here
+    src: "", // <- put your video here
     poster: "",
     ratio: "16/9",
   },
@@ -173,15 +185,6 @@ window.WEDDING_CONFIG = {
     // Each person is { name, relation }. A plain text name also works.
     groups: [
       {
-        title: "Sithara's Family",
-        names: [
-          { name: "V T Antony", relation: "Father" },
-          { name: "Jessy Antony", relation: "Mother" },
-          { name: "Sagara Antony", relation: "Sister" },
-          { name: "Sandesh V Antony", relation: "Brother" },
-        ],
-      },
-      {
         title: "Renath's Family",
         names: [
           { name: "Sunny Abraham", relation: "Father" },
@@ -191,15 +194,24 @@ window.WEDDING_CONFIG = {
           { name: "Raiden Tessel Sunny", relation: "Nephew" },
         ],
       },
+      {
+        title: "Sithara's Family",
+        names: [
+          { name: "V T Antony", relation: "Father" },
+          { name: "Jessy Antony", relation: "Mother" },
+          { name: "Sagara Antony", relation: "Sister" },
+          { name: "Sandesh V Antony", relation: "Brother" },
+        ],
+      },
     ],
     closing: "With love and gratitude,", // "" to hide
-    signoff: "Sithara & Renath", // "" to hide
+    signoff: "Renath & Sithara", // "" to hide
   },
 
   /* ---- Hero, hashtag, footer -------------------------------------------- */
   // Optional full-screen hero photo (e.g. "images/hero.jpg"). Leave "" for the elegant default.
   heroImage: "images/hero.webp", // SAMPLE - replace with your own photo
-  hashtag: "#SitharaWedsRenath", // SAMPLE - "" to hide
+  hashtag: "#RenathWedsSithara", // SAMPLE - "" to hide
 
   // Shown in the footer: "Designed & Developed by <developerName>"
   developerName: "Mathews Vinoy",

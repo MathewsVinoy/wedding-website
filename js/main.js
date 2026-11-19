@@ -65,16 +65,16 @@
       if (v != null && v !== '') el.textContent = v;
     });
 
-    const title = `${C.bride.name} & ${C.groom.name} | Wedding Invitation`;
+    const title = `${C.groom.name} & ${C.bride.name} | Wedding Invitation`;
     document.title = title;
-    const desc = `You are invited to the wedding of ${C.bride.name} & ${C.groom.name} on ${view.display.dateLong}` +
+    const desc = `You are invited to the wedding of ${C.groom.name} & ${C.bride.name} on ${view.display.dateLong}` +
       (C.venue && C.venue.city ? ` in ${C.venue.city}` : '') + '.';
     const setMeta = (sel, val) => { const m = $(sel); if (m) m.setAttribute('content', val); };
     setMeta('meta[name="description"]', desc);
     setMeta('meta[property="og:title"]', title);
     setMeta('meta[property="og:description"]', desc);
 
-    const initials = `${(C.bride.name || '')[0] || ''} & ${(C.groom.name || '')[0] || ''}`;
+    const initials = `${(C.groom.name || '')[0] || ''} & ${(C.bride.name || '')[0] || ''}`;
     $$('[data-monogram]').forEach(el => { el.textContent = initials; });
 
     // Invitation paragraphs
@@ -124,17 +124,21 @@
    * Couple photos
    * ------------------------------------------------------------------ */
   function initCouple() {
-    [['bride', '#bride-card'], ['groom', '#groom-card']].forEach(([key, sel]) => {
-      const img = $(`${sel} .person__photo img`);
-      const person = C[key];
-      if (!img) return;
-      if (person.photo) {
-        img.src = person.photo;
-        img.alt = `Portrait of ${person.fullName || person.name}`;
-      } else {
-        $(`${sel} .person__photo`).hidden = true;
-      }
-    });
+    // one combined portrait of the couple (config: couple.photo). No file yet = tidy placeholder frame.
+    const cp = C.couple || {};
+    const fig = $('#couple-photo');
+    if (fig) {
+      const img = $('img', fig), frame = $('.couple-photo__frame', fig);
+      if (cp.enabled === false) fig.hidden = true;
+      if (cp.ratio) frame.style.setProperty('--cp-ratio', String(cp.ratio).replace('/', ' / '));
+      if (cp.position) img.style.objectPosition = cp.position;
+      const empty = () => { frame.classList.add('is-empty'); img.removeAttribute('src'); };
+      if (cp.photo) {
+        img.alt = cp.alt || `${C.groom.fullName || C.groom.name} and ${C.bride.fullName || C.bride.name} together`;
+        img.addEventListener('error', empty, { once: true });
+        img.src = cp.photo;
+      } else empty();
+    }
   }
 
   /* ------------------------------------------------------------------ *
@@ -466,21 +470,37 @@
 
     const wrap = $('#regards-families');
     const groups = (R.groups || []).filter(g => g && (g.names || []).length);
+    const person = n => {
+      const p = typeof n === 'string' ? { name: n } : (n || {});
+      const d = document.createElement('div');
+      d.className = 'person-card';
+      const nm = document.createElement('span'); nm.className = 'family__name'; nm.textContent = p.name || '';
+      d.appendChild(nm);
+      if (p.relation) { const r = document.createElement('span'); r.className = 'family__rel'; r.textContent = p.relation; d.appendChild(r); }
+      return d;
+    };
     groups.forEach(g => {
       const box = document.createElement('div');
       box.className = 'family';
       if (g.title) { const h = document.createElement('h3'); h.className = 'family__title'; h.textContent = g.title; box.appendChild(h); }
-      const ul = document.createElement('ul');
-      ul.className = 'family__names';
-      g.names.forEach(n => {
-        const p = typeof n === 'string' ? { name: n } : (n || {});
-        const li = document.createElement('li');
-        const nm = document.createElement('span'); nm.className = 'family__name'; nm.textContent = p.name || '';
-        li.appendChild(nm);
-        if (p.relation) { const r = document.createElement('span'); r.className = 'family__rel'; r.textContent = p.relation; li.appendChild(r); }
-        ul.appendChild(li);
-      });
-      box.appendChild(ul);
+      // father & mother are shown together, larger; everyone else sits in a tidy grid below
+      const isParent = n => typeof n === 'object' && /^(father|mother)$/i.test(n.relation || '');
+      const parents = g.names.filter(isParent), others = g.names.filter(n => !isParent(n));
+      if (parents.length) {
+        const row = document.createElement('div');
+        row.className = 'family__parents';
+        parents.forEach((n, i) => {
+          if (i) { const amp = document.createElement('span'); amp.className = 'family__amp'; amp.setAttribute('aria-hidden', 'true'); amp.textContent = '&'; row.appendChild(amp); }
+          row.appendChild(person(n));
+        });
+        box.appendChild(row);
+      }
+      if (others.length) {
+        const grid = document.createElement('div');
+        grid.className = 'family__others';
+        others.forEach(n => grid.appendChild(person(n)));
+        box.appendChild(grid);
+      }
       wrap.appendChild(box);
     });
     wrap.hidden = !groups.length;
@@ -503,9 +523,9 @@
     const start = weddingDate;
     const endD = new Date(start.getTime() + (C.durationHours || 5) * 3600 * 1000);
     const stamp = d => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-    const title = `Wedding of ${C.bride.name} & ${C.groom.name}`;
+    const title = `Wedding of ${C.groom.name} & ${C.bride.name}`;
     const location = [C.venue.name, C.venue.address].filter(Boolean).join(', ');
-    const details = `You are invited to celebrate the wedding of ${C.bride.name} & ${C.groom.name}.`;
+    const details = `You are invited to celebrate the wedding of ${C.groom.name} & ${C.bride.name}.`;
     const esc = s => String(s).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
 
     $('#btn-gcal').href = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
@@ -875,7 +895,7 @@
     });
 
     if (reduceMotion) return;
-    const colours = [['#F9C9D3', '#EE9DB0'], ['#FBDDE3', '#F0B1C0'], ['#F8DEC4', '#E6B98C'], ['#F5B5C4', '#DC7E96']];
+    const colours = [['#F4E8CB', '#E3CE9F'], ['#FAF1DC', '#EBDAB5'], ['#F6EBD3', '#DCC48F'], ['#EFDFB9', '#CDB074']];
     const count = window.innerWidth < 640 ? 10 : 18;
     $$('.petals').forEach(wrap => { for (let i = 0; i < count; i++) {
       const p = document.createElement('span');
