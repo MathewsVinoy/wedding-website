@@ -215,5 +215,5 @@ window.WEDDING_CONFIG = {
 
   // Shown in the footer: "Designed & Developed by <developerName>"
   developerName: "Mathews Vinoy",
-  developerLink: "", // optional website / portfolio URL
+  developerLink: "https://github.com/MathewsVinoy", // optional website / portfolio URL
 };
