@@ -36,7 +36,7 @@ window.WEDDING_CONFIG = {
      position: which part to keep when cropping, e.g. "center 30%" keeps faces higher up. */
   couple: {
     enabled: true,
-    photo: "images/new.webp",
+    photo: "images/hero.webp",
     alt: "Renath and Sithara together",
     ratio: "3/2",
     position: "center 30%",
@@ -150,7 +150,7 @@ window.WEDDING_CONFIG = {
      src: "audio/our-song.mp3". Only use music you own or have licence to use. */
   music: {
     enabled: true, // false removes the music button entirely
-    src: "", // e.g. "audio/our-song.mp3"  ("" = built-in melody)
+    src: "audio/song.mp3", // e.g. "audio/our-song.mp3"  ("" = built-in melody)
     volume: 0.4, // 0 (silent) to 1 (full)
   },
 
@@ -166,7 +166,7 @@ window.WEDDING_CONFIG = {
     eyebrow: "Our story",
     title: "A little film for you",
     caption: "A few moments from our journey, before the big day.",
-    src: "", // <- put your video here
+    src: "video/video.mp4", // <- put your video here
     poster: "",
     ratio: "16/9",
   },
