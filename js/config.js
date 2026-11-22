@@ -119,18 +119,17 @@ window.WEDDING_CONFIG = {
   // `ratio` is optional ("3/4", "1/1", "4/3") - it keeps the layout tidy while photos load.
   // The .svg files below are SAMPLE artwork - replace them with your real photographs (.jpg/.webp).
   gallery: [
-    { src: "images/gallery-1.webp", alt: "The couple ", ratio: "3/4" },
-    { src: "images/gallery-2.webp", alt: "A quiet moment", ratio: "1/1" },
-    { src: "images/gallery-3.webp", alt: "Laughing together", ratio: "4/5" },
-    { src: "images/gallery-4.webp", alt: "Walking hand in hand", ratio: "4/3" },
-    { src: "images/gallery-5.webp", alt: "The proposal", ratio: "3/4" },
-    { src: "images/gallery-6.webp", alt: "Adventures together", ratio: "1/1" },
+    { src: "images/gallery-1.webp", ratio: "3/4" },
+    { src: "images/gallery-2.webp", ratio: "1/1" },
+    { src: "images/gallery-3.webp", ratio: "4/5" },
+    { src: "images/gallery-4.webp", ratio: "4/3" },
+    { src: "images/gallery-5.webp", ratio: "3/4" },
+    { src: "images/gallery-6.webp", ratio: "1/1" },
     {
       src: "images/gallery-7.webp",
-      alt: "Celebrating with family",
       ratio: "4/5",
     },
-    { src: "images/gallery-8.webp", alt: "Our favourite place", ratio: "4/3" },
+    { src: "images/gallery-8.webp", ratio: "4/3" },
   ],
 
   /* ---- Splash (welcome) screen -------------------------------------------
